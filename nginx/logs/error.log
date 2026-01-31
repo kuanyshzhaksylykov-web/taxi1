@@ -1,0 +1,59 @@
+2026/01/31 00:01:05 [emerg] 5004#12796: CreateFile() "D:\taxi\nginx/conf/nginx.conf" failed (3: The system cannot find the path specified)
+2026/01/31 00:01:07 [emerg] 1920#8680: CreateFile() "D:\taxi\nginx\mime.types" failed (2: The system cannot find the file specified) in D:\taxi\nginx\nginx.conf:6
+2026/01/31 00:08:47 [emerg] 26436#28504: CreateFile() "D:\taxi\nginx/conf/nginx.conf" failed (3: The system cannot find the path specified)
+2026/01/31 00:08:49 [emerg] 8916#16468: CreateFile() "D:\taxi\nginx\mime.types" failed (2: The system cannot find the file specified) in D:\taxi\nginx\nginx.conf:6
+2026/01/31 00:13:32 [emerg] 12436#3148: CreateFile() "D:\taxi\nginx/conf/nginx.conf" failed (3: The system cannot find the path specified)
+2026/01/31 00:13:34 [emerg] 24968#30068: CreateFile() "D:\taxi\nginx\mime.types" failed (2: The system cannot find the file specified) in D:\taxi\nginx\nginx.conf:6
+2026/01/31 00:17:22 [emerg] 29392#8760: CreateFile() "D:\taxi\nginx/conf/nginx.conf" failed (3: The system cannot find the path specified)
+2026/01/31 00:17:24 [emerg] 33444#32880: CreateFile() "D:\taxi\nginx\mime.types" failed (2: The system cannot find the file specified) in D:\taxi\nginx\nginx.conf:6
+2026/01/31 00:20:39 [emerg] 22076#30208: CreateFile() "D:\taxi\nginx/conf/nginx.conf" failed (3: The system cannot find the path specified)
+2026/01/31 00:20:52 [emerg] 2032#20780: CreateFile() "D:\taxi\nginx/conf/nginx.conf" failed (3: The system cannot find the path specified)
+2026/01/31 00:21:31 [emerg] 12464#33552: CreateFile() "D:\taxi\nginx/conf/nginx.conf" failed (3: The system cannot find the path specified)
+2026/01/31 00:21:54 [emerg] 19860#1920: CreateFile() "D:\taxi\nginx/conf/nginx.conf" failed (3: The system cannot find the path specified)
+2026/01/31 00:21:56 [emerg] 30100#12952: CreateFile() "D:\taxi\nginx\mime.types" failed (2: The system cannot find the file specified) in D:\taxi\nginx\nginx.conf:6
+2026/01/31 01:19:08 [emerg] 14560#13484: CreateFile() "D:\taxi\nginx/conf/nginx.conf" failed (3: The system cannot find the path specified)
+2026/01/31 01:19:10 [emerg] 8640#6280: CreateFile() "D:\taxi\nginx\mime.types" failed (2: The system cannot find the file specified) in D:\taxi\nginx\nginx.conf:6
+2026/01/31 01:24:29 [emerg] 20088#21700: CreateFile() "D:\taxi\nginx/conf/nginx.conf" failed (3: The system cannot find the path specified)
+2026/01/31 01:24:31 [emerg] 18516#5584: CreateFile() "D:\taxi\nginx\mime.types" failed (2: The system cannot find the file specified) in D:\taxi\nginx\nginx.conf:6
+2026/01/31 01:44:52 [emerg] 21284#4836: CreateFile() "D:\taxi\nginx/conf/nginx.conf" failed (3: The system cannot find the path specified)
+2026/01/31 01:44:54 [emerg] 24480#23480: CreateFile() "D:\taxi\nginx\mime.types" failed (2: The system cannot find the file specified) in D:\taxi\nginx\nginx.conf:6
+2026/01/31 01:52:15 [emerg] 13632#9092: CreateFile() "D:\taxi\nginx/conf/nginx.conf" failed (3: The system cannot find the path specified)
+2026/01/31 01:52:17 [emerg] 6984#12360: CreateFile() "D:\taxi\nginx\mime.types" failed (2: The system cannot find the file specified) in D:\taxi\nginx\nginx.conf:6
+2026/01/31 01:52:45 [emerg] 432#16452: CreateFile() "D:\taxi\nginx/conf/nginx.conf" failed (3: The system cannot find the path specified)
+2026/01/31 01:55:29 [emerg] 19760#8716: CreateFile() "D:\taxi\nginx/conf/nginx.conf" failed (3: The system cannot find the path specified)
+2026/01/31 01:55:31 [emerg] 33676#13628: CreateFile() "D:\taxi\nginx\mime.types" failed (2: The system cannot find the file specified) in D:\taxi\nginx\nginx.conf:6
+2026/01/31 02:02:07 [emerg] 30400#31308: CreateFile() "D:\taxi\nginx/conf/nginx.conf" failed (3: The system cannot find the path specified)
+2026/01/31 02:02:09 [emerg] 16532#13868: CreateFile() "D:\taxi\nginx\mime.types" failed (2: The system cannot find the file specified) in D:\taxi\nginx\nginx.conf:6
+2026/01/31 02:17:42 [emerg] 15756#32932: CreateFile() "D:\taxi\nginx/conf/nginx.conf" failed (3: The system cannot find the path specified)
+2026/01/31 02:17:44 [emerg] 18916#10308: CreateFile() "D:\taxi\nginx\mime.types" failed (2: The system cannot find the file specified) in D:\taxi\nginx\nginx.conf:6
+2026/01/31 02:27:23 [emerg] 21208#33276: CreateFile() "D:\taxi\nginx/conf/nginx.conf" failed (3: The system cannot find the path specified)
+2026/01/31 02:27:25 [emerg] 26228#29104: CreateFile() "D:\taxi\nginx\mime.types" failed (2: The system cannot find the file specified) in D:\taxi\nginx\nginx.conf:6
+2026/01/31 02:35:14 [emerg] 13296#13348: CreateFile() "D:\taxi\nginx/conf/nginx.conf" failed (3: The system cannot find the path specified)
+2026/01/31 02:35:16 [emerg] 24828#32888: CreateFile() "D:\taxi\nginx\mime.types" failed (2: The system cannot find the file specified) in D:\taxi\nginx\nginx.conf:6
+2026/01/31 02:40:48 [emerg] 13008#24768: CreateFile() "D:\taxi\nginx/conf/nginx.conf" failed (3: The system cannot find the path specified)
+2026/01/31 02:40:50 [emerg] 33080#26584: CreateFile() "D:\taxi\nginx\mime.types" failed (2: The system cannot find the file specified) in D:\taxi\nginx\nginx.conf:6
+2026/01/31 02:42:47 [emerg] 29084#1624: CreateFile() "D:\taxi\nginx/conf/nginx.conf" failed (3: The system cannot find the path specified)
+2026/01/31 02:42:49 [emerg] 25736#12500: CreateFile() "D:\taxi\nginx\mime.types" failed (2: The system cannot find the file specified) in D:\taxi\nginx\nginx.conf:6
+2026/01/31 02:45:12 [emerg] 18860#27272: CreateFile() "D:\taxi\nginx/conf/nginx.conf" failed (3: The system cannot find the path specified)
+2026/01/31 02:45:14 [emerg] 31220#30568: CreateFile() "D:\taxi\nginx\mime.types" failed (2: The system cannot find the file specified) in D:\taxi\nginx\nginx.conf:6
+2026/01/31 03:13:56 [emerg] 17688#25748: CreateFile() "D:\taxi\nginx/conf/nginx.conf" failed (3: The system cannot find the path specified)
+2026/01/31 03:13:58 [emerg] 14084#29356: CreateFile() "D:\taxi\nginx\mime.types" failed (2: The system cannot find the file specified) in D:\taxi\nginx\nginx.conf:6
+2026/01/31 03:24:45 [emerg] 24408#5024: CreateFile() "D:\taxi\nginx/conf/nginx.conf" failed (3: The system cannot find the path specified)
+2026/01/31 03:47:40 [emerg] 26556#26212: CreateFile() "D:\taxi\nginx/conf/nginx.conf" failed (3: The system cannot find the path specified)
+2026/01/31 03:47:42 [emerg] 18704#29876: CreateFile() "D:\taxi\nginx\mime.types" failed (2: The system cannot find the file specified) in D:\taxi\nginx\nginx.conf:6
+2026/01/31 03:48:33 [emerg] 22108#23768: CreateFile() "D:\taxi\nginx/conf/nginx.conf" failed (3: The system cannot find the path specified)
+2026/01/31 03:48:35 [emerg] 15156#13436: CreateFile() "D:\taxi\nginx\mime.types" failed (2: The system cannot find the file specified) in D:\taxi\nginx\nginx.conf:6
+2026/01/31 03:53:13 [emerg] 30748#28176: CreateFile() "D:\taxi\nginx/conf/nginx.conf" failed (3: The system cannot find the path specified)
+2026/01/31 03:53:15 [emerg] 13912#21836: CreateFile() "D:\taxi\nginx\mime.types" failed (2: The system cannot find the file specified) in D:\taxi\nginx\nginx.conf:6
+2026/01/31 03:55:27 [emerg] 13412#26584: CreateFile() "D:\taxi\nginx/conf/nginx.conf" failed (3: The system cannot find the path specified)
+2026/01/31 03:55:29 [emerg] 12016#17256: CreateFile() "D:\taxi\nginx\mime.types" failed (2: The system cannot find the file specified) in D:\taxi\nginx\nginx.conf:6
+2026/01/31 04:00:59 [emerg] 21268#1920: CreateFile() "D:\taxi\nginx/conf/nginx.conf" failed (3: The system cannot find the path specified)
+2026/01/31 04:01:01 [emerg] 30356#31376: CreateFile() "D:\taxi\nginx\mime.types" failed (2: The system cannot find the file specified) in D:\taxi\nginx\nginx.conf:6
+2026/01/31 04:19:33 [emerg] 25328#32636: CreateFile() "D:\taxi\nginx/conf/nginx.conf" failed (3: The system cannot find the path specified)
+2026/01/31 04:19:35 [emerg] 17100#14560: CreateFile() "D:\taxi\nginx\mime.types" failed (2: The system cannot find the file specified) in D:\taxi\nginx\nginx.conf:6
+2026/01/31 04:25:48 [emerg] 17148#17140: CreateFile() "D:\taxi\nginx/conf/nginx.conf" failed (3: The system cannot find the path specified)
+2026/01/31 04:25:50 [emerg] 23504#23520: CreateFile() "D:\taxi\nginx\mime.types" failed (2: The system cannot find the file specified) in D:\taxi\nginx\nginx.conf:6
+2026/01/31 04:27:25 [emerg] 18848#13640: CreateFile() "D:\taxi\nginx/conf/nginx.conf" failed (3: The system cannot find the path specified)
+2026/01/31 04:27:27 [emerg] 6556#6952: CreateFile() "D:\taxi\nginx\mime.types" failed (2: The system cannot find the file specified) in D:\taxi\nginx\nginx.conf:6
+2026/01/31 05:09:56 [emerg] 21752#5544: CreateFile() "D:\taxi\nginx/conf/nginx.conf" failed (3: The system cannot find the path specified)
+2026/01/31 05:09:58 [emerg] 24360#17020: CreateFile() "D:\taxi\nginx\mime.types" failed (2: The system cannot find the file specified) in D:\taxi\nginx\nginx.conf:6

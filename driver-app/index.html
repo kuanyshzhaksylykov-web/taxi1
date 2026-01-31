@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Такси Сервис - Для водителей</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=ваш_ключ&lang=ru_RU" type="text/javascript"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- Экран загрузки -->
+        <div id="loading" class="screen">
+            <div class="loading-content">
+                <div class="spinner"></div>
+                <h2>Загрузка приложения...</h2>
+                <p>Пожалуйста, подождите</p>
+            </div>
+        </div>
+
+        <!-- Экран авторизации -->
+        <div id="login-screen" class="screen" style="display: none;">
+            <div class="container">
+                <div class="logo">
+                    <i class="fas fa-taxi"></i>
+                    <h1>Такси Сервис</h1>
+                </div>
+                
+                <div class="login-form">
+                    <h2>Вход для водителей</h2>
+                    
+                    <div class="input-group">
+                        <label for="phone">
+                            <i class="fas fa-phone"></i> Номер телефона
+                        </label>
+                        <input 
+                            type="tel" 
+                            id="phone" 
+                            placeholder="+7 999 123-45-67"
+                            v-model="phone"
+                        >
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="password">
+                            <i class="fas fa-lock"></i> Пароль
+                        </label>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            placeholder="Введите пароль"
+                            v-model="password"
+                        >
+                    </div>
+                    
+                    <button class="btn btn-primary" @click="login">
+                        <i class="fas fa-sign-in-alt"></i> Войти
+                    </button>
+                    
+                    <div class="links">
+                        <a href="#" @click="showForgotPassword">Забыли пароль?</a>
+                        <a href="#" @click="showRegistration">Регистрация</a>
+                    </div>
+                </div>
+                
+                <div class="info-box">
+                    <h3><i class="fas fa-info-circle"></i> Информация</h3>
+                    <p>Для работы в приложении необходимо:</p>
+                    <ul>
+                        <li>Быть зарегистрированным водителем</li>
+                        <li>Иметь подтвержденный профиль</li>
+                        <li>Разрешить доступ к геолокации</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Регистрация водителя -->
+        <div id="registration-screen" class="screen" style="display: none;">
+            <div class="container">
+                <div class="header">
+                    <button class="btn-back" @click="showLogin">
+                        <i class="fas fa-arrow-left"></i> Назад
+                    </button>
+                    <h2>Регистрация водителя</h2>
+                </div>
+                
+                <div class="registration-steps">
+                    <div class="step-indicator">
+                        <div class="step active" :class="{active: regStep >= 1}">1</div>
+                        <div class="step" :class="{active: regStep >= 2}">2</div>
+                        <div class="step" :class="{active: regStep >= 3}">3</div>
+                        <div class="step" :class="{active: regStep >= 4}">4</div>
+                    </div>
+                    
+                    <!-- Шаг 1: Личные данные -->
+                    <div class="step-content" v-if="regStep === 1">
+                        <h3>Личные данные</h3>
+                        
+                        <div class="input-group">
+                            <label>Фамилия</label>
+                            <input type="text" v-model="regData.lastName" placeholder="Иванов">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Имя</label>
+                            <input type="text" v-model="regData.firstName" placeholder="Иван">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Отчество</label>
+                            <input type="text" v-model="regData.middleName" placeholder="Иванович">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Дата рождения</label>
+                            <input type="date" v-model="regData.birthDate">
+                        </div>
+                        
+                        <button class="btn btn-primary" @click="nextRegistrationStep">
+                            Далее <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Шаг 2: Данные автомобиля -->
+                    <div class="step-content" v-if="regStep === 2">
+                        <h3>Данные автомобиля</h3>
+                        
+                        <div class="input-group">
+                            <label>Марка</label>
+                            <input type="text" v-model="regData.carBrand" placeholder="Toyota">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Модель</label>
+                            <input type="text" v-model="regData.carModel" placeholder="Camry">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Год выпуска</label>
+                            <input type="number" v-model="regData.carYear" placeholder="2020" min="1990" max="2024">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Цвет</label>
+                            <input type="text" v-model="regData.carColor" placeholder="Белый">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Гос. номер</label>
+                            <input type="text" v-model="regData.carPlate" placeholder="А123ВС777" style="text-transform: uppercase;">
+                        </div>
+                        
+                        <div class="button-group">
+                            <button class="btn btn-secondary" @click="prevRegistrationStep">
+                                <i class="fas fa-arrow-left"></i> Назад
+                            </button>
+                            <button class="btn btn-primary" @click="nextRegistrationStep">
+                                Далее <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Шаг 3: Документы -->
+                    <div class="step-content" v-if="regStep === 3">
+                        <h3>Документы</h3>
+                        
+                        <div class="input-group">
+                            <label>Номер водительского удостоверения</label>
+                            <input type="text" v-model="regData.licenseNumber" placeholder="77АА123456">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Срок действия прав</label>
+                            <input type="date" v-model="regData.licenseExpiry">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Номер страховки ОСАГО</label>
+                            <input type="text" v-model="regData.insuranceNumber" placeholder="XXX123456789">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Срок действия страховки</label>
+                            <input type="date" v-model="regData.insuranceExpiry">
+                        </div>
+                        
+                        <div class="upload-section">
+                            <h4>Фотографии документов</h4>
+                            <p>Загрузите фото документов (лицевая и обратная сторона)</p>
+                            
+                            <div class="upload-grid">
+                                <div class="upload-item" @click="uploadDocument('license_front')">
+                                    <i class="fas fa-id-card"></i>
+                                    <span>Права (лицевая)</span>
+                                    <small v-if="regData.documents.license_front">✓ Загружено</small>
+                                </div>
+                                
+                                <div class="upload-item" @click="uploadDocument('license_back')">
+                                    <i class="fas fa-id-card"></i>
+                                    <span>Права (обратная)</span>
+                                    <small v-if="regData.documents.license_back">✓ Загружено</small>
+                                </div>
+                                
+                                <div class="upload-item" @click="uploadDocument('insurance')">
+                                    <i class="fas fa-file-contract"></i>
+                                    <span>Страховка</span>
+                                    <small v-if="regData.documents.insurance">✓ Загружено</small>
+                                </div>
+                                
+                                <div class="upload-item" @click="uploadDocument('car_front')">
+                                    <i class="fas fa-car"></i>
+                                    <span>Авто (спереди)</span>
+                                    <small v-if="regData.documents.car_front">✓ Загружено</small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="button-group">
+                            <button class="btn btn-secondary" @click="prevRegistrationStep">
+                                <i class="fas fa-arrow-left"></i> Назад
+                            </button>
+                            <button class="btn btn-primary" @click="nextRegistrationStep">
+                                Далее <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Шаг 4: Подтверждение -->
+                    <div class="step-content" v-if="regStep === 4">
+                        <h3>Проверка данных</h3>
+                        
+                        <div class="review-data">
+                            <div class="data-section">
+                                <h4><i class="fas fa-user"></i> Личные данные</h4>
+                                <p><strong>ФИО:</strong> {{regData.lastName}} {{regData.firstName}} {{regData.middleName}}</p>
+                                <p><strong>Дата рождения:</strong> {{formatDate(regData.birthDate)}}</p>
+                            </div>
+                            
+                            <div class="data-section">
+                                <h4><i class="fas fa-car"></i> Автомобиль</h4>
+                                <p><strong>Марка/модель:</strong> {{regData.carBrand}} {{regData.carModel}}</p>
+                                <p><strong>Год/цвет:</strong> {{regData.carYear}}, {{regData.carColor}}</p>
+                                <p><strong>Гос. номер:</strong> {{regData.carPlate}}</p>
+                            </div>
+                            
+                            <div class="data-section">
+                                <h4><i class="fas fa-file-alt"></i> Документы</h4>
+                                <p><strong>Права:</strong> {{regData.licenseNumber}} (до {{formatDate(regData.licenseExpiry)}})</p>
+                                <p><strong>Страховка:</strong> {{regData.insuranceNumber}} (до {{formatDate(regData.insuranceExpiry)}})</p>
+                            </div>
+                            
+                            <div class="agreement">
+                                <label>
+                                    <input type="checkbox" v-model="regData.agreeTerms">
+                                    Я согласен с <a href="#" @click="showTerms">условиями использования</a> и <a href="#" @click="showPrivacy">политикой конфиденциальности</a>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="button-group">
+                            <button class="btn btn-secondary" @click="prevRegistrationStep">
+                                <i class="fas fa-arrow-left"></i> Назад
+                            </button>
+                            <button class="btn btn-primary" @click="submitRegistration" :disabled="!regData.agreeTerms">
+                                <i class="fas fa-paper-plane"></i> Отправить заявку
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Главный экран водителя -->
+        <div id="main-screen" class="screen" style="display: none;">
+            <!-- Шапка -->
+            <header class="header">
+                <div class="header-left">
+                    <div class="driver-status" :class="driverStatus">
+                        <div class="status-dot"></div>
+                        <span>{{ statusText }}</span>
+                    </div>
+                </div>
+                
+                <div class="header-center">
+                    <div class="balance">
+                        <i class="fas fa-wallet"></i>
+                        <span>{{ formatBalance(balance) }} ₽</span>
+                    </div>
+                </div>
+                
+                <div class="header-right">
+                    <button class="btn-icon" @click="showProfile">
+                        <i class="fas fa-user"></i>
+                    </button>
+                    <button class="btn-icon" @click="showNotifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge" v-if="unreadNotifications > 0">{{unreadNotifications}}</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Карта -->
+            <div id="map-container">
+                <div id="map"></div>
+                
+                <!-- Кнопки управления картой -->
+                <div class="map-controls">
+                    <button class="btn-map-control" @click="centerOnLocation">
+                        <i class="fas fa-location-crosshairs"></i>
+                    </button>
+                    <button class="btn-map-control" @click="toggleTraffic">
+                        <i class="fas fa-traffic-light"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Нижняя панель -->
+            <div class="bottom-panel">
+                <!-- Режим поиска заказов -->
+                <div class="search-mode" v-if="driverStatus === 'online' && !currentOrder">
+                    <div class="search-header">
+                        <h3><i class="fas fa-search"></i> Поиск заказов</h3>
+                        <div class="online-time">
+                            <i class="fas fa-clock"></i> {{ formatOnlineTime(onlineTime) }}
+                        </div>
+                    </div>
+                    
+                    <div class="orders-around">
+                        <div class="order-count">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Заказов вокруг: <strong>{{ nearbyOrders.length }}</strong></span>
+                        </div>
+                        
+                        <div class="order-list" v-if="nearbyOrders.length > 0">
+                            <div class="order-item" v-for="order in nearbyOrders" :key="order.id">
+                                <div class="order-info">
+                                    <div class="order-from-to">
+                                        <div class="order-from">
+                                            <i class="fas fa-circle" style="color: #4CAF50;"></i>
+                                            {{ shortenAddress(order.pickup_address) }}
+                                        </div>
+                                        <div class="order-to">
+                                            <i class="fas fa-flag" style="color: #FF5722;"></i>
+                                            {{ shortenAddress(order.destination_address) }}
+                                        </div>
+                                    </div>
+                                    <div class="order-details">
+                                        <span><i class="fas fa-ruler"></i> {{ order.distance_km }} км</span>
+                                        <span><i class="fas fa-clock"></i> {{ order.duration_minutes }} мин</span>
+                                        <span><i class="fas fa-money-bill-wave"></i> {{ order.price }} ₽</span>
+                                    </div>
+                                </div>
+                                <button class="btn btn-small" @click="viewOrderDetails(order)">
+                                    <i class="fas fa-eye"></i> Подробнее
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="no-orders" v-else>
+                            <i class="fas fa-search"></i>
+                            <p>Заказов поблизости нет</p>
+                            <small>Попробуйте переехать в более оживленное место</small>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-secondary btn-block" @click="goOffline">
+                        <i class="fas fa-sign-out-alt"></i> Уйти с линии
+                    </button>
+                </div>
+                
+                <!-- Режим нового заказа -->
+                <div class="new-order-mode" v-if="newOrder">
+                    <div class="new-order-header">
+                        <h3><i class="fas fa-bell"></i> Новый заказ!</h3>
+                        <div class="order-timer">
+                            <i class="fas fa-hourglass-half"></i> {{ orderTimer }} сек
+                        </div>
+                    </div>
+                    
+                    <div class="order-details-card">
+                        <div class="order-route">
+                            <div class="route-point">
+                                <div class="point-icon" style="background: #4CAF50;">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div class="point-info">
+                                    <div class="point-label">Откуда</div>
+                                    <div class="point-address">{{ newOrder.pickup_address }}</div>
+                                </div>
+                                <div class="point-distance">
+                                    <i class="fas fa-walking"></i>
+                                    {{ calculateDistanceToOrder(newOrder) }} м
+                                </div>
+                            </div>
+                            
+                            <div class="route-line"></div>
+                            
+                            <div class="route-point">
+                                <div class="point-icon" style="background: #FF5722;">
+                                    <i class="fas fa-flag"></i>
+                                </div>
+                                <div class="point-info">
+                                    <div class="point-label">Куда</div>
+                                    <div class="point-address">{{ newOrder.destination_address }}</div>
+                                </div>
+                                <div class="point-distance">
+                                    <i class="fas fa-road"></i>
+                                    {{ newOrder.distance_km }} км
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="order-summary">
+                            <div class="summary-item">
+                                <i class="fas fa-clock"></i>
+                                <span>{{ newOrder.duration_minutes }} мин</span>
+                            </div>
+                            <div class="summary-item">
+                                <i class="fas fa-money-bill-wave"></i>
+                                <span>{{ newOrder.price }} ₽</span>
+                            </div>
+                            <div class="summary-item">
+                                <i class="fas fa-user"></i>
+                                <span>Пассажир</span>
+                            </div>
+                        </div>
+                        
+                        <div class="order-actions">
+                            <button class="btn btn-danger" @click="declineOrder">
+                                <i class="fas fa-times"></i> Отклонить
+                            </button>
+                            <button class="btn btn-success" @click="acceptOrder">
+                                <i class="fas fa-check"></i> Принять
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Режим выполнения заказа -->
+                <div class="ride-mode" v-if="currentOrder">
+                    <div class="ride-header">
+                        <h3>
+                            <i class="fas" :class="rideIcon"></i>
+                            {{ rideStatusText }}
+                        </h3>
+                        <div class="ride-timer">
+                            <i class="fas fa-clock"></i> {{ formatDuration(rideTimer) }}
+                        </div>
+                    </div>
+                    
+                    <div class="ride-details">
+                        <div class="passenger-info" v-if="currentOrder.passenger_name">
+                            <div class="passenger-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="passenger-details">
+                                <div class="passenger-name">{{ currentOrder.passenger_name }}</div>
+                                <div class="passenger-rating">
+                                    <i class="fas fa-star" v-for="n in 5" :key="n" 
+                                       :class="{filled: n <= (currentOrder.passenger_rating || 5)}"></i>
+                                </div>
+                            </div>
+                            <button class="btn-icon" @click="callPassenger">
+                                <i class="fas fa-phone"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="ride-progress">
+                            <div class="progress-step" :class="{active: rideStep >= 1}">
+                                <div class="step-number">1</div>
+                                <div class="step-label">Еду к пассажиру</div>
+                            </div>
+                            <div class="progress-step" :class="{active: rideStep >= 2}">
+                                <div class="step-number">2</div>
+                                <div class="step-label">Пассажир в машине</div>
+                            </div>
+                            <div class="progress-step" :class="{active: rideStep >= 3}">
+                                <div class="step-number">3</div>
+                                <div class="step-label">Еду к точке Б</div>
+                            </div>
+                            <div class="progress-step" :class="{active: rideStep >= 4}">
+                                <div class="step-number">4</div>
+                                <div class="step-label">Завершить</div>
+                            </div>
+                        </div>
+                        
+                        <div class="ride-actions">
+                            <button class="btn" 
+                                    :class="{'btn-primary': rideStep === 1, 'btn-secondary': rideStep !== 1}"
+                                    @click="arriveAtPickup"
+                                    :disabled="rideStep > 1">
+                                <i class="fas fa-map-marker-alt"></i> Прибыл
+                            </button>
+                            
+                            <button class="btn" 
+                                    :class="{'btn-primary': rideStep === 2, 'btn-secondary': rideStep !== 2}"
+                                    @click="startRide"
+                                    :disabled="rideStep !== 2">
+                                <i class="fas fa-play"></i> Начать поездку
+                            </button>
+                            
+                            <button class="btn" 
+                                    :class="{'btn-primary': rideStep === 3, 'btn-secondary': rideStep !== 3}"
+                                    @click="completeRide"
+                                    :disabled="rideStep !== 3">
+                                <i class="fas fa-flag-checkered"></i> Завершить
+                            </button>
+                            
+                            <button class="btn btn-danger" @click="showProblemModal">
+                                <i class="fas fa-exclamation-triangle"></i> Проблема
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Кнопка выхода на линию -->
+                <div class="offline-mode" v-if="driverStatus === 'offline' && !currentOrder">
+                    <div class="offline-content">
+                        <div class="status-icon offline">
+                            <i class="fas fa-power-off"></i>
+                        </div>
+                        <h3>Вы не на линии</h3>
+                        <p>Выйдите на линию, чтобы начать получать заказы</p>
+                        
+                        <button class="btn btn-success btn-block" @click="goOnline">
+                            <i class="fas fa-play"></i> Выйти на линию
+                        </button>
+                        
+                        <div class="stats-preview">
+                            <div class="stat-item">
+                                <i class="fas fa-chart-line"></i>
+                                <div class="stat-value">{{ todayStats.rides || 0 }}</div>
+                                <div class="stat-label">Поездки сегодня</div>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-money-bill-wave"></i>
+                                <div class="stat-value">{{ formatBalance(todayStats.earnings || 0) }}</div>
+                                <div class="stat-label">Заработок</div>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-star"></i>
+                                <div class="stat-value">{{ driverRating || '5.0' }}</div>
+                                <div class="stat-label">Рейтинг</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Меню -->
+            <nav class="bottom-nav">
+                <button class="nav-btn" :class="{active: activeTab === 'home'}" @click="setActiveTab('home')">
+                    <i class="fas fa-home"></i>
+                    <span>Главная</span>
+                </button>
+                <button class="nav-btn" :class="{active: activeTab === 'orders'}" @click="setActiveTab('orders')">
+                    <i class="fas fa-list"></i>
+                    <span>Заказы</span>
+                </button>
+                <button class="nav-btn" :class="{active: activeTab === 'balance'}" @click="setActiveTab('balance')">
+                    <i class="fas fa-wallet"></i>
+                    <span>Баланс</span>
+                </button>
+                <button class="nav-btn" :class="{active: activeTab === 'stats'}" @click="setActiveTab('stats')">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Статистика</span>
+                </button>
+                <button class="nav-btn" :class="{active: activeTab === 'settings'}" @click="setActiveTab('settings')">
+                    <i class="fas fa-cog"></i>
+                    <span>Настройки</span>
+                </button>
+            </nav>
+        </div>
+
+        <!-- Экран профиля -->
+        <div id="profile-screen" class="screen" style="display: none;">
+            <div class="container">
+                <div class="header">
+                    <button class="btn-back" @click="showMainScreen">
+                        <i class="fas fa-arrow-left"></i> Назад
+                    </button>
+                    <h2>Мой профиль</h2>
+                </div>
+                
+                <div class="profile-content">
+                    <div class="profile-header">
+                        <div class="avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="profile-info">
+                            <h3>{{ driverInfo.first_name }} {{ driverInfo.last_name }}</h3>
+                            <div class="rating">
+                                <i class="fas fa-star" v-for="n in 5" :key="n" 
+                                   :class="{filled: n <= Math.floor(driverInfo.rating || 5)}"></i>
+                                <span class="rating-value">{{ driverInfo.rating || '5.0' }}</span>
+                            </div>
+                            <div class="status-badge" :class="driverStatus">
+                                {{ statusText }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-stats">
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: #4CAF50;">
+                                <i class="fas fa-road"></i>
+                            </div>
+                            <div class="stat-details">
+                                <div class="stat-value">{{ driverStats.total_rides || 0 }}</div>
+                                <div class="stat-label">Всего поездок</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: #2196F3;">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                            <div class="stat-details">
+                                <div class="stat-value">{{ formatBalance(driverStats.total_earnings || 0) }}</div>
+                                <div class="stat-label">Общий заработок</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: #FF9800;">
+                                <i class="fas fa-percentage"></i>
+                            </div>
+                            <div class="stat-details">
+                                <div class="stat-value">{{ driverStats.acceptance_rate || '100' }}%</div>
+                                <div class="stat-label">Принято заказов</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: #9C27B0;">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-details">
+                                <div class="stat-value">{{ driverStats.total_hours || 0 }}</div>
+                                <div class="stat-label">Часов онлайн</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-menu">
+                        <div class="menu-section">
+                            <h4><i class="fas fa-car"></i> Автомобиль</h4>
+                            <div class="menu-item" @click="showCarInfo">
+                                <div class="menu-item-content">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>Информация об автомобиле</span>
+                                </div>
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                            <div class="menu-item" @click="showDocuments">
+                                <div class="menu-item-content">
+                                    <i class="fas fa-file-alt"></i>
+                                    <span>Мои документы</span>
+                                </div>
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="menu-section">
+                            <h4><i class="fas fa-user-cog"></i> Аккаунт</h4>
+                            <div class="menu-item" @click="editProfile">
+                                <div class="menu-item-content">
+                                    <i class="fas fa-edit"></i>
+                                    <span>Редактировать профиль</span>
+                                </div>
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                            <div class="menu-item" @click="changePassword">
+                                <div class="menu-item-content">
+                                    <i class="fas fa-key"></i>
+                                    <span>Сменить пароль</span>
+                                </div>
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="menu-section">
+                            <h4><i class="fas fa-shield-alt"></i> Безопасность</h4>
+                            <div class="menu-item" @click="showSecuritySettings">
+                                <div class="menu-item-content">
+                                    <i class="fas fa-lock"></i>
+                                    <span>Настройки безопасности</span>
+                                </div>
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                            <div class="menu-item" @click="logout">
+                                <div class="menu-item-content">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    <span>Выйти</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальные окна -->
+    
+    <!-- Модальное окно деталей заказа -->
+    <div id="order-details-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Детали заказа</h3>
+                <button class="btn-close" @click="closeModal('order-details-modal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Содержимое будет генерироваться динамически -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Модальное окно проблемы -->
+    <div id="problem-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Сообщить о проблеме</h3>
+                <button class="btn-close" @click="closeModal('problem-modal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="problem-types">
+                    <h4>Выберите тип проблемы:</h4>
+                    <div class="problem-list">
+                        <div class="problem-item" v-for="problem in problemTypes" :key="problem.id"
+                             @click="selectProblem(problem)">
+                            <i :class="problem.icon"></i>
+                            <span>{{ problem.name }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="problem-description" v-if="selectedProblem">
+                    <h4>Описание проблемы:</h4>
+                    <textarea v-model="problemDescription" 
+                              placeholder="Опишите проблему подробнее..." 
+                              rows="3"></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" @click="closeModal('problem-modal')">
+                        Отмена
+                    </button>
+                    <button class="btn btn-primary" @click="submitProblem" :disabled="!selectedProblem">
+                        Отправить
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Уведомления -->
+    <div id="notification-container"></div>
+
+    <!-- Подключение Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <!-- Подключение Axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- Основной скрипт приложения -->
+    <script src="app.js"></script>
+</body>
+</html>
